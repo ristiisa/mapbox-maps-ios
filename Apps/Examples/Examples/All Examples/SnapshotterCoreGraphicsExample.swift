@@ -2,7 +2,7 @@ import UIKit
 import MapboxMaps
 
 final class SnapshotterCoreGraphicsExample: UIViewController, NonMapViewExampleProtocol {
-    private var snapshotter: Snapshotter!
+    //private var snapshotter: Snapshotter!
     private var snapshotView: UIImageView!
     private var cancelables = Set<AnyCancelable>()
 
@@ -25,16 +25,16 @@ final class SnapshotterCoreGraphicsExample: UIViewController, NonMapViewExampleP
         let options = MapSnapshotOptions(size: CGSize(width: view.bounds.size.width,
                                                       height: view.bounds.height),
                                          pixelRatio: 4)
-        snapshotter = Snapshotter(options: options)
+        var snapshotter = Snapshotter(options: options)
         snapshotter.styleURI = .dark
         snapshotter.setCamera(to: CameraOptions(center: CLLocationCoordinate2D(latitude: 51.180885866921386, longitude: 16.26129435178828), zoom: 4))
 
         snapshotter.onStyleLoaded.observeNext { [weak self] _ in
-            self?.startSnapshot()
+            self?.startSnapshot(snapshotter)
         }.store(in: &cancelables)
     }
 
-    private func startSnapshot() {
+    private func startSnapshot(_ snapshotter: Snapshotter!) {
         // Begin the snapshot after the style is loaded into the `Snapshotter`.
         // The `SnapshotOverlay` object contains references to the current
         // graphics context being used by the Snapshotter and provides closures to
